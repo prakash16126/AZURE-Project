@@ -66,7 +66,7 @@ If Azure CLI reports it cannot resolve `management.azure.com`, fix local DNS/VPN
    resource_group_name = "prakash-aks-rg"
    location            = "eastus"
    node_count          = 2
-   node_vm_size        = "Standard_F2als_v7"
+   node_vm_size        = "Standard_F4ams_v7"
    ssh_public_key_path = "~/.ssh/aks-terraform.pub"
 
    # Prefer restricting access to your actual public egress IP.
@@ -82,11 +82,11 @@ If Azure CLI reports it cannot resolve `management.azure.com`, fix local DNS/VPN
 3. Check that the selected VM SKU is available in the chosen region and that subscription quota is sufficient. Run these checks from any directory. Quota and SKU availability vary by region and subscription:
 
    ```powershell
-   az vm list-skus --location eastus --size Standard_F2als_v7 --all --output table
+   az vm list-skus --location eastus --size Standard_F4ams_v7 --all --output table
    az vm list-usage --location eastus --output table
    ```
 
-   The current `Standard_F2als_v7` is a 2-vCPU, 4-GiB node. Two nodes provide limited capacity for AKS system services, Azure Monitor, Argo CD, Prometheus/Grafana, and an application. Probe failures across multiple services have already occurred in this setup. For a monitoring/GitOps learning cluster, consider at least two 4-vCPU, 16-GiB nodes if that SKU is available and quota/cost permit; verify the exact SKU and quota before changing Terraform. A larger pool costs more and may need quota approval.
+   The configured `Standard_F4ams_v7` has 4 vCPUs per node, so two nodes request 8 regional vCPUs. Confirm its memory, availability, and quota in your selected region using the SKU and usage commands; availability and quota vary by subscription. This is a larger pool than the previous F2 size, but capacity can still be tight when running AKS system services, Azure Monitor, Argo CD, Prometheus/Grafana, and an application. It costs more and may require a quota increase.
 
 4. From `infra/terraform`, validate and review the plan before creating anything:
 

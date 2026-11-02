@@ -72,7 +72,7 @@ variable "node_count" {
 
 variable "node_vm_size" {
   type    = string
-  default = "Standard_F2als_v7"
+  default = "Standard_F4ams_v7"
 }
 
 variable "os_disk_size_gb" {
